@@ -1,0 +1,20 @@
+# Fichiers de données et logs
+*.db
+*.db-journal
+*.pkl
+*.csv
+*.pcap
+*.log
+logs/
+data/backups/
+
+# Environnements Python
+__pycache__/
+*.pyc
+venv/
+env/
+.venv/
+
+# Fichiers système
+.DS_Store
+Thumbs.db

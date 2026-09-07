@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import folium
+from folium.plugins import MarkerCluster
+
+# Coordonnées de Douala, Cameroun
+DOUALA_LAT = 4.0511
+DOUALA_LON = 9.7679
+
+# Coordonnées de Yaoundé, Cameroun
+YAOUNDE_LAT = 3.8480
+YAOUNDE_LON = 11.5021
+
+# Créer la carte centrée sur Douala
+m = folium.Map(location=[DOUALA_LAT, DOUALA_LON], zoom_start=7, tiles="OpenStreetMap")
+
+# Ajouter un marqueur pour SODIMAS Ascenseur (Douala)
+folium.Marker(
+    location=[DOUALA_LAT, DUALA_LON],
+    popup=folium.Popup(
+        "<b>SODIMAS Ascenseur</b><br>Douala, Cameroun<br>"
+        "<i>Siège social - Installation et maintenance d'ascenseurs</i>",
+        max_width=300
+    ),
+    icon=folium.Icon(color="red", icon="building", prefix="fa")
+).add_to(m)
+
+# Ajouter un marqueur pour Yaoundé (bureau secondaire)
+folium.Marker(
+    location=[YAOUNDE_LAT, YAOUNDE_LON],
+    popup=folium.Popup(
+        "<b>SODIMAS Ascenseur</b><br>Yaoundé, Cameroun<br>"
+        "<i>Bureau secondaire</i>",
+        max_width=300
+    ),
+    icon=folium.Icon(color="blue", icon="building", prefix="fa")
+).add_to(m)
+
+# Tracer une ligne reliant Douala et Yaoundé
+folium.PolyLine(
+    locations=[(DOUALA_LAT, DUALA_LON), (YAOUNDE_LAT, YAOUNDE_LON)],
+    color='gray',
+    weight=2,
+    dash_array='5, 5',
+    popup='Présence dans les deux villes'
+).add_to(m)
+
+# Ajouter un cercle autour de Douala (zone d'activité)
+folium.Circle(
+    location=[DOUALA_LAT, DUALA_LON],
+    radius=3000,
+    color='blue',
+    fill=True,
+    fill_opacity=0.1,
+    popup='Zone d\'activité principale (Douala)'
+).add_to(m)
+
+# Ajouter une légende textuelle sur la carte
+folium.map.Marker(
+    location=[5.0, 10.5],
+    icon=folium.DivIcon(
+        html='<div style="font-size: 13px; font-weight: bold; background: white; padding: 8px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">'
+             '📍 SODIMAS Ascenseur<br>'
+             '🏢 Douala (Siège) / Yaoundé (Bureau secondaire)'
+             '</div>'
+    )
+).add_to(m)
+
+# Sauvegarder la carte HTML
+m.save('/home/lepentium/AI-HYBRID-IDS/figures/carte_sodimas.html')
+print("✅ Carte générée : carte_sodimas.html")
+
+# Option : capture d'écran automatique avec selenium (si installé)
+try:
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    import time
+
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(options=options)
+    driver.get('file:///home/lepentium/AI-HYBRID-IDS/figures/carte_sodimas.html')
+    time.sleep(2)
+    driver.save_screenshot('/home/lepentium/AI-HYBRID-IDS/figures/carte_sodimas.png')
+    driver.quit()
+    print("✅ Capture d'écran générée : carte_sodimas.png")
+except Exception as e:
+    print("⚠️ Capture d'écran automatique impossible. Veuillez capturer manuellement la carte depuis votre navigateur.")
+    print("   Ouvrez le fichier carte_sodimas.html et faites une capture d'écran.")
+
+print("\n📌 Instructions d'intégration dans le rapport :")
+print("   - Figure 4bis : Localisation géographique de SODIMAS Ascenseur")
+print("   - Emplacement : II. Présentation de l'entreprise (après l'organigramme)")
+print("   - Légende : Carte indiquant le siège social à Douala et le bureau secondaire à Yaoundé."
